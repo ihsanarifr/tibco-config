@@ -64,7 +64,7 @@ TIBCO di perusahaan ASYST Garuda Group
 * Execute fail `./TIBCOUniversalInstaller-lnx-x86-64.bin`
 
 ## Tanya Jawab
-### Saat install TIBCORv terdapat error `Bundled JRE is not binary compatible with host OS/Arch or it is corrupt. Testing bundled JRE failed.`, Bagaimana cara mengatasinya?
+### Saat install TIBCORv terdapat error `Bundled JRE is not binary compatible with host OS/Arch or it is corrupt. Testing bundled JRE failed`, Bagaimana cara mengatasinya?
 Solusinya simple yaitu tambahkan arsitektur i386 dengan ikuti perintah dibawah
 `sudo dpkg --add-architecture i386`
 `sudo apt-get update`
