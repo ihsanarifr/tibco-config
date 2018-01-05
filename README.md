@@ -28,8 +28,8 @@ TIBCO di perusahaan ASYST Garuda Group
 * Jika sudah keluar informasi java maka sudah terinstal java
 
 ## Install Oracle Database
-*
-*
+* Pilih file `oracle-xe_11.2.0-2_amd64.deb`
+* Execute file dengan perintah `sudo dpkg -i oracle-xe_11.2.0-2_amd64.deb`
 
 ## Cara Instalasi TIBCO
 ### Install TIBCORv
@@ -64,11 +64,11 @@ TIBCO di perusahaan ASYST Garuda Group
 * Execute fail `./TIBCOUniversalInstaller-lnx-x86-64.bin`
 
 ## Tanya Jawab
-### Saat install TIBCORv terdapat error `Bundled JRE is not binary compatible with host OS/Arch or it is corrupt. Testing bundled JRE failed`, Bagaimana cara mengatasinya?
+### Saat install TIBCORv terdapat error `Bundled JRE is not binary compatible with host OS/Arch or it is corrupt. Testing bundled JRE failed.` Bagaimana cara mengatasinya?
 Solusinya simple yaitu tambahkan arsitektur i386 dengan ikuti perintah dibawah
-`sudo dpkg --add-architecture i386`
-`sudo apt-get update`
-`sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386`
+* `sudo dpkg --add-architecture i386`
+* `sudo apt-get update`
+* `sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386`
 
 ### Saat install JDK perintah `echo $JAVA_HOME` tidak muncul apa-apa
 Saat melakukan edit `~/.bashrc` lihat apakah saat user `root` atau tidak? Usahakan tidak menggunakan user `root` agar JDK bisa terbaca di user biasa saja. Jika sudah diedit close terminal dan coba kembali perintah `echo $JAVA_HOME`
