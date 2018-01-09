@@ -22,3 +22,16 @@
 * Akses dengan browser <code>http://ihsan-optiplex-3020m:9090</code>
 * username : <code>ihsan</code>
 * password : <code>1234567890</code>
+
+## Mengaktifkan service
+* Configuration -> Advanced
+* cari konfigurasi seperti `bw.platform.services.retreiveresources.Enabled` valuenya diganti menjadi <code>True</code>
+* dan cari konfigurasi `bw.platform.services.retreiveresources.enableLookups` valuenya diganti menjadi <code>true</code>
+
+## Masih error ketika
+* poin 5 test and debug CreditCheckService
+* <code>http://localhost:8010/inspection.wsil</code>
+* seharusnya keluar
+```{r, tidy=FALSE, eval=FALSE, highlight=FALSE }
+http://localhost:8010/BWP.Core/Services/CreditCheck/Interface/intPerformCreditCheck-service.serviceagent?wsdl
+```
