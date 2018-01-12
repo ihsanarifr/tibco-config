@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>Partner Link CreditCheck</name>
+    <resourceType>shared.partner.config</resourceType>
+    <config>
+        <partners>
+            <row partnerName="CreditCheck" timeout="0" endpoint="/BWP.Core/Services/CreditCheck/Contract/CreditCheckService_ConcreteWSDL.wsdl#intfwsPerformCreditCheckEndpoint1" endpointType="soap">
+                <config>
+                    <endpointURI>http://localhost:7575/BWP.Core/Services/CreditCheck/Interface/intfPerformCreditCheck-service.serviceagent/intfwsPerformCreditCheckEndpoint1</endpointURI>
+                    <useProxy>false</useProxy>
+                    <proxyName/>
+                    <requireBasicAuth>false</requireBasicAuth>
+                    <authScheme>NONE</authScheme>
+                    <basicHttpAuthIdentity/>
+                    <domain/>
+                    <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002"/>
+                    <soapAttachmentStyle>SwA</soapAttachmentStyle>
+                    <soap>
+                        <operation name="PerformCreditCheckOp">
+                            <general>
+                                <config>
+                                    <soapAction>/BWP.Core/Services/CreditCheck/Interface/intfPerformCreditCheck-service.serviceagent/intfwsPerformCreditCheckEndpoint1/PerformCreditCheckOp</soapAction>
+                                </config>
+                            </general>
+                        </operation>
+                    </soap>
+                </config>
+            </row>
+        </partners>
+    </config>
+</BWSharedResource>

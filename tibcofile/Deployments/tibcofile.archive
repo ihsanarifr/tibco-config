@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <enterpriseArchive>
+        <sharedArchive name="Shared Archive">
+            <resourceType>shared.archive.resource</resourceType>
+            <authorProperty>ihsan</authorProperty>
+        </sharedArchive>
+        <processArchive name="CreditCheckService">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>ihsan</authorProperty>
+            <processProperty>/BWP.Core/Services/CreditCheck/Interface/intfPerformCreditCheck-service.serviceagent</processProperty>
+        </processArchive>
+        <processArchive name="ProcessOrderService">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>ihsan</authorProperty>
+            <processProperty>/BWP.Core/Services/OrderProcess/Interface/intfProcessOrder-service.serviceagent</processProperty>
+        </processArchive>
+        <processArchive name="ReceiveOrders">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>ihsan</authorProperty>
+            <processProperty>/Process Definition/OrderProcess/ProcessBatchOrder.process,/ProcessDefinitions/OrderProcess/ProcessWebOrder.process</processProperty>
+        </processArchive>
+        <versionProperty>3</versionProperty>
+        <authorProperty>ihsan</authorProperty>
+        <addServiceSettableGvars>true</addServiceSettableGvars>
+        <name>tibcofile</name>
+        <designer>
+            <lockedProperties/>
+            <fixedChildren/>
+            <resourceDescriptions/>
+        </designer>
+        <fileLocationProperty>/home/ihsan/tibcofile.ear</fileLocationProperty>
+    </enterpriseArchive>
+</Repository:repository>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created by TIBCO WSDL-->
+<wsdl:definitions xmlns:ns1="http://www.tibco.com/bwp/schemas/opresult" xmlns:tns="http://www.tibco.com/bwp/services/processorderconcrete" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns0="http://www.tibco.com/bwp/schemas/purchaseorder" xmlns:jms="http://www.tibco.com/namespaces/ws/2004/soap/binding/JMS" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:jndi="http://www.tibco.com/namespaces/ws/2004/soap/apis/jndi" name="Untitled" targetNamespace="http://www.tibco.com/bwp/services/processorderconcrete">
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:PO="http://www.tibco.com/bwp/schemas/purchaseorder" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tibco.com/bwp/schemas/purchaseorder" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <element name="PurchaseOrder">
+                <complexType>
+                    <sequence>
+                        <element name="CustomerID" type="xsd:string"/>
+                        <element name="OrderDate" type="xsd:string"/>
+                        <element name="ShipmentDate" type="xsd:string"/>
+                        <element name="ShipmentLocation" type="xsd:string"/>
+                        <element name="DeliveryMethod" type="xsd:integer"/>
+                        <element name="Priority" type="xsd:string"/>
+                        <element name="LineItem" maxOccurs="unbounded">
+                            <complexType>
+                                <sequence>
+                                    <element name="Item" type="xsd:string"/>
+                                    <element name="Quantity" type="xsd:integer"/>
+                                    <element name="UnitPrice" type="xsd:decimal"/>
+                                </sequence>
+                            </complexType>
+                        </element>
+                    </sequence>
+                </complexType>
+            </element>
+        </schema>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:OP="http://www.tibco.com/bwp/schemas/opresult" targetNamespace="http://www.tibco.com/bwp/schemas/opresult" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:element name="OrderProcessingResult">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="FileName" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:service name="intfProcessOrder-service">
+        <wsdl:port name="intfwsProcessOrderEndpoint0" binding="tns:intfwsProcessOrderEndpoint0Binding">
+            <soap:address location=""/>
+            <jms:connectionFactory>QueueConnectionFactory</jms:connectionFactory>
+            <jms:targetAddress destination="queue">rahman.ProcessOrder.Service</jms:targetAddress>
+        </wsdl:port>
+    </wsdl:service>
+    <wsdl:portType name="portType">
+        <wsdl:operation name="ProcessOrderOp">
+            <wsdl:input message="tns:PurchaseOrder"/>
+            <wsdl:output message="tns:OrderProcessingResult"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="intfwsProcessOrderEndpoint0Binding" type="tns:portType">
+        <soap:binding style="document" transport="http://www.tibco.com/namespaces/ws/2004/soap/binding/JMS"/>
+        <jms:binding messageFormat="bytes"/>
+        <wsdl:operation name="ProcessOrderOp">
+            <soap:operation style="document" soapAction="/BWP.Core/Services/OrderProcess/Interface/intfProcessOrder-service.serviceagent/intfwsProcessOrderEndpoint0/ProcessOrderOp"/>
+            <wsdl:input>
+                <soap:body use="literal" parts="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:message name="PurchaseOrder">
+        <wsdl:part name="parameters" element="ns0:PurchaseOrder"/>
+    </wsdl:message>
+    <wsdl:message name="OrderProcessingResult">
+        <wsdl:part name="parameters" element="ns1:OrderProcessingResult"/>
+    </wsdl:message>
+</wsdl:definitions>

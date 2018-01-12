@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created by TIBCO WSDL-->
+<wsdl:definitions xmlns:tns="http://www.tibco.com/bwp/services/advancedgetexchangeRate" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns0="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd" xmlns:jms="http://www.tibco.com/namespaces/ws/2004/soap/binding/JMS" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:jndi="http://www.tibco.com/namespaces/ws/2004/soap/apis/jndi" name="Untitled" targetNamespace="http://www.tibco.com/bwp/services/advancedgetexchangeRate">
+    <wsdl:types>
+        <xs:schema xmlns="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:element name="currCode" type="xs:string"/>
+            <xs:element name="currCodeRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="ns0:currCode"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:service name="intfAdvancedGetExchangeRate-service">
+        <wsdl:port name="intfwsAdvancedGetExchangeRateEndpoint1" binding="tns:intfwsAdvancedGetExchangeRateEndpoint1Binding">
+            <soap:address location=""/>
+            <jms:connectionFactory>QueueConnectionFactory</jms:connectionFactory>
+            <jms:targetAddress destination="queue">queue.sample</jms:targetAddress>
+        </wsdl:port>
+    </wsdl:service>
+    <wsdl:portType name="portType">
+        <wsdl:operation name="AdvancedGetExchangeRateOp">
+            <wsdl:input message="tns:currCodeRequest"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="intfwsAdvancedGetExchangeRateEndpoint1Binding" type="tns:portType">
+        <soap:binding style="document" transport="http://www.tibco.com/namespaces/ws/2004/soap/binding/JMS"/>
+        <jms:binding messageFormat="bytes"/>
+        <wsdl:operation name="AdvancedGetExchangeRateOp">
+            <soap:operation style="document" soapAction="/BWP.Core/Services/ExchangeRate/Interface/intfAdvancedGetExchangeRate-service.serviceagent/intfwsAdvancedGetExchangeRateEndpoint1/AdvancedGetExchangeRateOp"/>
+            <wsdl:input>
+                <soap:body use="literal" parts="parameters"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:message name="currCodeRequest">
+        <wsdl:part name="parameters" element="ns0:currCodeRequest"/>
+    </wsdl:message>
+</wsdl:definitions>

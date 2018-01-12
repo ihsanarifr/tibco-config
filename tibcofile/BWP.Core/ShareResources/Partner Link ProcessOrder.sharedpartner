@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>Partner Link ProcessOrder</name>
+    <resourceType>shared.partner.config</resourceType>
+    <config>
+        <partners>
+            <row partnerName="ProcessOrder" timeout="0" endpoint="/BWP.Core/Services/OrderProcess/Contract/ProcessOrderService_ConcreteWSDL.wsdl#intfwsProcessOrderEndpoint0" endpointType="soap">
+                <config>
+                    <jmsPanel>
+                        <tab>
+                            <tabName>JNDI</tabName>
+                            <tabType>jndi</tabType>
+                            <config>
+                                <NamingURL>tcp://localhost:7222</NamingURL>
+                                <NamingPrincipal/>
+                                <NamingCredential/>
+                                <ConnectionFactory>QueueConnectionFactory</ConnectionFactory>
+                                <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002"/>
+                                <ConnectionFactorySSLPassword/>
+                                <useSsl>false</useSsl>
+                            </config>
+                        </tab>
+                        <tab>
+                            <tabName>JMS</tabName>
+                            <tabType>jms</tabType>
+                            <config>
+                                <shareJms>false</shareJms>
+                                <ConnectionReference/>
+                                <JMSUserName/>
+                                <JMSPassword/>
+                                <JMSDestination>rahman.ProcessOrder.Service</JMSDestination>
+                                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                                <JMSTimeToLive/>
+                                <JMSPriority>0</JMSPriority>
+                            </config>
+                        </tab>
+                    </jmsPanel>
+                    <soapAttachmentStyle>SwA</soapAttachmentStyle>
+                    <soap>
+                        <operation name="ProcessOrderOp">
+                            <general>
+                                <config>
+                                    <soapAction>/BWP.Core/Services/OrderProcess/Interface/intfProcessOrder-service.serviceagent/intfwsProcessOrderEndpoint0/ProcessOrderOp</soapAction>
+                                </config>
+                            </general>
+                        </operation>
+                    </soap>
+                </config>
+            </row>
+        </partners>
+    </config>
+</BWSharedResource>

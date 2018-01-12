@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx0="http://www.tibco.com/bwp/schemas/purchaseorder" xmlns:pfx1="http://www.tibco.com/bwp/schemas/opresult" xmlns:tns="http://www.tibco.com/bwp/services/processorder" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tibco.com/bwp/services/processorder">
+    <import namespace="http://www.tibco.com/bwp/schemas/purchaseorder" location="../../../Schema/PurchaseOrderSchema.xsd"/>
+    <import namespace="http://www.tibco.com/bwp/schemas/opresult" location="../../../Schema/OrderProcessingResult.xsd"/>
+    <message name="OrderProcessingResult">
+        <part element="pfx1:OrderProcessingResult" name="parameters"/>
+    </message>
+    <message name="PurchaseOrder">
+        <part element="pfx0:PurchaseOrder" name="parameters"/>
+    </message>
+    <portType name="portType">
+        <operation name="ProcessOrderOp">
+            <input message="tns:PurchaseOrder"/>
+            <output message="tns:OrderProcessingResult"/>
+        </operation>
+    </portType>
+</definitions>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx3="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd" xmlns:pfx2="http://www.tibco.com/bwp/services/advancedgetexchangeRate" xmlns:pfx="http://www.tibco.com/bwp/services/creditcheckconcrete">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd" schemaLocation="/BWP.Core/Schema/GetCorrCode.xsd"/>
+    <wsdl:import namespace="http://www.tibco.com/bwp/services/advancedgetexchangeRate" location="/BWP.Core/Services/ExchangeRate/Contract/AdvancedGetExchangeRate_ConcreteWSDL.wsdl"/>
+    <pd:name>BWP.Core/Services/ExchangeRate/UnitTest/TestExchangeRate.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx3:currCodeRequest"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>545</pd:endX>
+    <pd:endY>60</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1515741051831</pd:targetNamespace>
+    <pd:activity name="Invoke Exchange Rate">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>341</pd:x>
+        <pd:y>67</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <timeoutType>Seconds</timeoutType>
+            <service>pfx2:intfAdvancedGetExchangeRate-service</service>
+            <servicePort>intfwsAdvancedGetExchangeRateEndpoint1</servicePort>
+            <operation>AdvancedGetExchangeRateOp</operation>
+            <soapAction>/BWP.Core/Services/ExchangeRate/Interface/intfAdvancedGetExchangeRate-service.serviceagent/intfwsAdvancedGetExchangeRateEndpoint1/AdvancedGetExchangeRateOp</soapAction>
+            <sharedChannels>
+                <jmsChannel>
+                    <NamingURL>tibjmsnaming://localhost:7222</NamingURL>
+                    <NamingInitialContextFactory>com.tibco.tibjms.naming.TibjmsInitialContextFactory</NamingInitialContextFactory>
+                    <NamingPrincipal>admin</NamingPrincipal>
+                    <NamingCredential/>
+                    <ConnectionFactory>QueueConnectionFactory</ConnectionFactory>
+                    <JMSTo>advancedGetExchangeRate</JMSTo>
+                    <JMSMessageType>Bytes</JMSMessageType>
+                    <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                    <JMSPriority>4</JMSPriority>
+                    <JMSTimeToLive>0</JMSTimeToLive>
+                    <JMSUserName>admin</JMSUserName>
+                    <JMSPassword/>
+                </jmsChannel>
+            </sharedChannels>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <xsl:copy-of select="$Start/pfx3:currCodeRequest"/>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Invoke Exchange Rate</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invoke Exchange Rate</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

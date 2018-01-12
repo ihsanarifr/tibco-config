@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/mail" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://xmlns.tibco.com/body" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd" schemaLocation="/BWP.Core/Schema/GetCorrCode.xsd"/>
+    <pd:name>BWP.Core/Services/ExhibitA/Implementation/AdvancedGetExchangeRate.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:currCodeRequest"/>
+    <pd:startX>58</pd:startX>
+    <pd:startY>118</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>645</pd:endX>
+    <pd:endY>120</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1515118110976</pd:targetNamespace>
+    <pd:activity name="LookupExchangeRate">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>186</pd:x>
+        <pd:y>118</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/BWP.Core/Connections/OrderDB.sharedjdbc</jdbcSharedConfig>
+            <statement>select exchange_rate.currency_name,
+exchange_rate.exchange_rate 
+from exchange_rate
+where ((exchange_rate.currency_code=?))</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>Prepared_Param_1</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>CURRENCY_NAME</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>VARCHAR2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>EXCHANGE_RATE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>2</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>NUMBER</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <Prepared_Param_1>
+                    <xsl:value-of select="$Start/pfx:currCodeRequest/pfx:currCode"/>
+                </Prepared_Param_1>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send Success Mail">
+        <pd:type>com.tibco.plugin.mail.MailPubActivity</pd:type>
+        <pd:resourceType>ae.activities.MailActivityResource</pd:resourceType>
+        <pd:x>427</pd:x>
+        <pd:y>58</pd:y>
+        <config>
+            <newMimeSupport>true</newMimeSupport>
+            <inputOutputVersion>5.2.0</inputOutputVersion>
+            <host>smtp.asyst.co.id</host>
+            <authenticate>true</authenticate>
+            <username>ihsan.arif</username>
+            <password>Rahman13@021092</password>
+            <useSsl>false</useSsl>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+            </ns0:ssl>
+            <InputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </InputHeaders>
+        </config>
+        <pd:inputBindings>
+            <ns2:mailActivityInput>
+                <from>
+                    <xsl:value-of select="&quot;ihsan.arif@asyst.co.id&quot;"/>
+                </from>
+                <to>
+                    <xsl:value-of select="&quot;ihsan.arif@asyst.co.id&quot;"/>
+                </to>
+                <subject>
+                    <xsl:value-of select="&quot;Exchange Rate&quot;"/>
+                </subject>
+                <ns3:bodyElement>
+                    <bodyText>
+                        <xsl:value-of select="concat('Currently, one ', tib:concat-sequence-format($LookupExchangeRate/resultSet/Record/CURRENCY_NAME, ','),' will buy you ',tib:concat-sequence-format($LookupExchangeRate/resultSet/Record/EXCHANGE_RATE, ','),' British Pounds')"/>
+                    </bodyText>
+                </ns3:bodyElement>
+            </ns2:mailActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send Error Mail">
+        <pd:type>com.tibco.plugin.mail.MailPubActivity</pd:type>
+        <pd:resourceType>ae.activities.MailActivityResource</pd:resourceType>
+        <pd:x>426</pd:x>
+        <pd:y>197</pd:y>
+        <config>
+            <newMimeSupport>true</newMimeSupport>
+            <inputOutputVersion>5.2.0</inputOutputVersion>
+            <host>smtp.asyst.co.id</host>
+            <authenticate>true</authenticate>
+            <username>ihsan.arif</username>
+            <password>Rahman13@021092</password>
+            <InputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="param" type="xsd:string"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </InputHeaders>
+        </config>
+        <pd:inputBindings>
+            <ns2:mailActivityInput>
+                <from>
+                    <xsl:value-of select="&quot;ihsan.arif@asyst.co.id&quot;"/>
+                </from>
+                <to>
+                    <xsl:value-of select="&quot;ihsan.arif@asyst.co.id&quot;"/>
+                </to>
+                <subject>
+                    <xsl:value-of select="&quot;Invalid Currency Code&quot;"/>
+                </subject>
+                <ns3:bodyElement>
+                    <bodyText>
+                        <xsl:value-of select="concat('Unfortunately &quot;',$Start/pfx:currCodeRequest/pfx:currCode,'&quot; is not a recognized currency code. Please try again.')"/>
+                    </bodyText>
+                </ns3:bodyElement>
+                <Headers>
+                    <param>
+                        <xsl:value-of select="false()"/>
+                    </param>
+                </Headers>
+            </ns2:mailActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>LookupExchangeRate</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>LookupExchangeRate</pd:from>
+        <pd:to>Send Error Mail</pd:to>
+        <pd:xpathDescription>otherwise</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Success Mail</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Error Mail</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>LookupExchangeRate</pd:from>
+        <pd:to>Send Success Mail</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($LookupExchangeRate/resultSet/Record)</pd:xpath>
+    </pd:transition>
+</pd:ProcessDefinition>

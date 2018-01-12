@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx0="http://www.tibco.com/bwp/schemas/creditcheck" xmlns:tns="http://www.tibco.com/bwp/services/creditcheckabstract" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tibco.com/bwp/services/creditcheckabstract">
+    <import namespace="http://www.tibco.com/bwp/schemas/creditcheck" location="../../../Schema/CreditCheckSchema.xsd"/>
+    <message name="CreditCheckRequest">
+        <part element="pfx0:CreditCheckRequest" name="parameters"/>
+    </message>
+    <message name="CreditCheckResult">
+        <part element="pfx0:CreditCheckResult" name="parameters"/>
+    </message>
+    <portType name="portType">
+        <operation name="PerformCreditCheckOp">
+            <input message="tns:CreditCheckRequest"/>
+            <output message="tns:CreditCheckResult"/>
+        </operation>
+    </portType>
+</definitions>

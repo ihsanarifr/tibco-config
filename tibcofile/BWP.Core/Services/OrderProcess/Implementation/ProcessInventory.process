@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/CheckpointSchema" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx2="http://www.tibco.com/bwp/schemas/lineitem" xmlns:pfx="http://www.tibco.com/bwp/schemas/purchaseorder" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.tibco.com/bwp/schemas/purchaseorder" schemaLocation="/BWP.Core/Schema/PurchaseOrderSchema.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.tibco.com/bwp/schemas/lineitem" schemaLocation="/BWP.Core/Schema/LineItem.xsd"/>
+    <pd:name>BWP.Core/Services/OrderProcess/Implementation/ProcessInventory.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:PurchaseOrder"/>
+    <pd:startX>41</pd:startX>
+    <pd:startY>164</pd:startY>
+    <pd:returnBindings>
+        <pfx2:LineItems>
+            <xsl:copy-of select="$InventoryItemStatus/AccumulatedOutput/pfx2:Item"/>
+        </pfx2:LineItems>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:LineItems"/>
+    <pd:endX>925</pd:endX>
+    <pd:endY>154</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1515554541227</pd:targetNamespace>
+    <pd:group name="Inventory Transaction">
+        <pd:type>com.tibco.pe.core.TransactionGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>139</pd:x>
+        <pd:y>10</pd:y>
+        <pd:width>575</pd:width>
+        <pd:height>294</pd:height>
+        <pd:collapsedWidth>53</pd:collapsedWidth>
+        <pd:collapsedHeight>67</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <config>
+            <pd:groupType>transactionGroup</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:transactionType>JDBCTransaction</pd:transactionType>
+            <pd:includeCheckpoint>false</pd:includeCheckpoint>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Inventory Iteration</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Inventory Iteration</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:group name="Inventory Iteration">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>183</pd:x>
+            <pd:y>46</pd:y>
+            <pd:width>489</pd:width>
+            <pd:height>223</pd:height>
+            <pd:collapsedWidth>53</pd:collapsedWidth>
+            <pd:collapsedHeight>67</pd:collapsedHeight>
+            <pd:groupVariables/>
+            <config>
+                <pd:groupType>inputLoop</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+                <pd:over>$Start/pfx:PurchaseOrder/pfx:LineItem</pd:over>
+                <pd:iterationElementSlot>currentItem</pd:iterationElementSlot>
+                <pd:indexSlot>itemIndex</pd:indexSlot>
+                <pd:outSlot>InventoryItemStatus</pd:outSlot>
+                <pd:activityOutputName>Check Status</pd:activityOutputName>
+                <pd:accumulateOutput>true</pd:accumulateOutput>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>Get Inventory Info</pd:to>
+                <pd:lineType>Straight</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Update Inventory</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Straight</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Check Status</pd:from>
+                <pd:to>end</pd:to>
+                <pd:xpathDescription>Back Order</pd:xpathDescription>
+                <pd:lineType>Straight</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>otherwise</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Get Inventory Info</pd:from>
+                <pd:to>Check Status</pd:to>
+                <pd:lineType>Straight</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Check Status</pd:from>
+                <pd:to>Update Inventory</pd:to>
+                <pd:xpathDescription>Available</pd:xpathDescription>
+                <pd:lineType>Straight</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>$Check-Status/pfx2:Item/pfx2:ItemStatus = "Available"</pd:xpath>
+            </pd:transition>
+            <pd:activity name="Get Inventory Info">
+                <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+                <pd:x>278</pd:x>
+                <pd:y>163</pd:y>
+                <config>
+                    <timeout>10</timeout>
+                    <commit>false</commit>
+                    <maxRows>100</maxRows>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/BWP.Core/Connections/OrderDB.sharedjdbc</jdbcSharedConfig>
+                    <statement>SELECT INVENTORY_ITEM.* FROM INVENTORY_ITEM
+WHERE ((INVENTORY_ITEM.ITEM_ID=?))</statement>
+                    <Prepared_Param_DataType>
+                        <parameter>
+                            <parameterName>ITEM_ID</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                    </Prepared_Param_DataType>
+                    <oraObjects/>
+                    <oraTables/>
+                    <QueryOutputCachedSchemaColumns>ITEM_ID</QueryOutputCachedSchemaColumns>
+                    <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                    <QueryOutputCachedSchemaDataTypesName>VARCHAR2</QueryOutputCachedSchemaDataTypesName>
+                    <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                    <QueryOutputCachedSchemaColumns>ITEM_DESC</QueryOutputCachedSchemaColumns>
+                    <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                    <QueryOutputCachedSchemaDataTypesName>VARCHAR2</QueryOutputCachedSchemaDataTypesName>
+                    <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                    <QueryOutputCachedSchemaColumns>QUANTITY</QueryOutputCachedSchemaColumns>
+                    <QueryOutputCachedSchemaDataTypes>2</QueryOutputCachedSchemaDataTypes>
+                    <QueryOutputCachedSchemaDataTypesName>NUMBER</QueryOutputCachedSchemaDataTypesName>
+                    <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                    <QueryOutputCachedSchemaColumns>UNIT_PRICE</QueryOutputCachedSchemaColumns>
+                    <QueryOutputCachedSchemaDataTypes>2</QueryOutputCachedSchemaDataTypes>
+                    <QueryOutputCachedSchemaDataTypesName>NUMBER</QueryOutputCachedSchemaDataTypesName>
+                    <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                </config>
+                <pd:inputBindings>
+                    <jdbcQueryActivityInput>
+                        <ITEM_ID>
+                            <xsl:value-of select="$currentItem/pfx:LineItem/pfx:Item"/>
+                        </ITEM_ID>
+                    </jdbcQueryActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Check Status">
+                <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+                <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+                <pd:x>403</pd:x>
+                <pd:y>165</pd:y>
+                <config>
+                    <element ref="pfx2:Item"/>
+                </config>
+                <pd:inputBindings>
+                    <pfx2:Item>
+                        <pfx2:ItemID>
+                            <xsl:value-of select="$Get-Inventory-Info/resultSet/Record[1]/ITEM_ID"/>
+                        </pfx2:ItemID>
+                        <pfx2:ItemDesc>
+                            <xsl:value-of select="$Get-Inventory-Info/resultSet/Record[1]/ITEM_DESC"/>
+                        </pfx2:ItemDesc>
+                        <pfx2:UnitPrice>
+                            <xsl:value-of select="$Get-Inventory-Info/resultSet/Record[1]/UNIT_PRICE"/>
+                        </pfx2:UnitPrice>
+                        <xsl:if test="$Get-Inventory-Info/resultSet/Record[1]/QUANTITY">
+                            <pfx2:Quantity>
+                                <xsl:value-of select="$Get-Inventory-Info/resultSet/Record[1]/QUANTITY"/>
+                            </pfx2:Quantity>
+                        </xsl:if>
+                        <xsl:choose>
+                            <xsl:when test="$Get-Inventory-Info/resultSet/Record[1]/QUANTITY - $currentItem/pfx:LineItem/pfx:Quantity >= 0">
+                                <pfx2:ItemStatus>
+                                    <xsl:value-of select="&quot;Available&quot;"/>
+                                </pfx2:ItemStatus>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx2:ItemStatus>
+                                    <xsl:value-of select="&quot;Back Order&quot;"/>
+                                </pfx2:ItemStatus>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </pfx2:Item>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Update Inventory">
+                <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+                <pd:x>539</pd:x>
+                <pd:y>110</pd:y>
+                <config>
+                    <timeout>10</timeout>
+                    <commit>false</commit>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/BWP.Core/Connections/OrderDB.sharedjdbc</jdbcSharedConfig>
+                    <statement>UPDATE  INVENTORY_ITEM SET QUANTITY=? WHERE ITEM_ID=?</statement>
+                    <Prepared_Param_DataType>
+                        <parameter>
+                            <parameterName>QUANTITY</parameterName>
+                            <dataType>INTEGER</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>ITEM_ID</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                    </Prepared_Param_DataType>
+                </config>
+                <pd:inputBindings>
+                    <jdbcUpdateActivityInput>
+                        <QUANTITY>
+                            <xsl:choose>
+                                <xsl:when test="exists($Get-Inventory-Info/resultSet/Record[1]/QUANTITY - $currentItem/pfx:LineItem/pfx:Quantity)">
+                                    <xsl:value-of select="$Get-Inventory-Info/resultSet/Record[1]/QUANTITY - $currentItem/pfx:LineItem/pfx:Quantity"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </QUANTITY>
+                        <ITEM_ID>
+                            <xsl:value-of select="$currentItem/pfx:LineItem/pfx:Item"/>
+                        </ITEM_ID>
+                    </jdbcUpdateActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+        </pd:group>
+    </pd:group>
+    <pd:activity name="Checkpoint">
+        <pd:type>com.tibco.pe.core.CheckpointActivity</pd:type>
+        <pd:resourceType>ae.process.checkpoint</pd:resourceType>
+        <pd:x>809</pd:x>
+        <pd:y>92</pd:y>
+        <config/>
+        <pd:inputBindings>
+            <ns:input/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Error">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>808</pd:x>
+        <pd:y>228</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;Failed to process inventory : &quot;,$_error/ns1:ErrorReport/Msg,$_error/ns1:ErrorReport/StackTrace)"/>
+                </message>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Inventory Transaction</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Inventory Transaction</pd:from>
+        <pd:to>Checkpoint</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Checkpoint</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Inventory Transaction</pd:from>
+        <pd:to>Log Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

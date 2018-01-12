@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx0="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd" xmlns:tns="http://www.tibco.com/advancegetexchangerateconcrete" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tibco.com/advancegetexchangerateconcrete">
+    <import namespace="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd" location="../../../Schema/GetCorrCode.xsd"/>
+    <message name="currCodeRequest">
+        <part element="pfx0:currCodeRequest" name="parameters"/>
+    </message>
+    <portType name="portType">
+        <operation name="AdvancedGetExchangeRateOp">
+            <input message="tns:currCodeRequest"/>
+        </operation>
+    </portType>
+</definitions>

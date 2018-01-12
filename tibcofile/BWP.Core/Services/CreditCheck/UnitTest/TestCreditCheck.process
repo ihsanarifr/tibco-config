@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx2="http://www.tibco.com/bwp/services/creditcheckconcrete" xmlns:pfx="http://www.tibco.com/bwp/schemas/creditcheck">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.tibco.com/bwp/schemas/creditcheck" schemaLocation="/BWP.Core/Schema/CreditCheckSchema.xsd"/>
+    <wsdl:import namespace="http://www.tibco.com/bwp/services/creditcheckconcrete" location="/BWP.Core/Services/CreditCheck/Contract/CreditCheckService_ConcreteWSDL.wsdl"/>
+    <pd:name>BWP.Core/Services/CreditCheck/UnitTest/TestCreditCheck.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:CreditCheckRequest"/>
+    <pd:startX>121</pd:startX>
+    <pd:startY>68</pd:startY>
+    <pd:returnBindings>
+        <pfx:CreditCheckResult>
+            <pfx:Status>
+                <xsl:value-of select="$Invoke-CreditCheckService/outputMessage/pfx:CreditCheckResult/pfx:Status"/>
+            </pfx:Status>
+        </pfx:CreditCheckResult>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx:CreditCheckResult"/>
+    <pd:endX>604</pd:endX>
+    <pd:endY>68</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1515030991847</pd:targetNamespace>
+    <pd:activity name="Invoke CreditCheckService">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>355</pd:x>
+        <pd:y>75</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <timeoutType>Seconds</timeoutType>
+            <service>pfx2:intfPerformCreditCheck-service</service>
+            <servicePort>intfwsPerformCreditCheckEndpoint1</servicePort>
+            <operation>PerformCreditCheckOp</operation>
+            <soapAction>/BWP.Core/Services/CreditCheck/Interface/intfPerformCreditCheck-service.serviceagent/intfwsPerformCreditCheckEndpoint1/PerformCreditCheckOp</soapAction>
+            <endpointURL>http://localhost:7575/BWP.Core/Services/CreditCheck/Interface/intfPerformCreditCheck-service.serviceagent/intfwsPerformCreditCheckEndpoint1</endpointURL>
+            <authScheme>NONE</authScheme>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <xsl:copy-of select="$Start/pfx:CreditCheckRequest"/>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Invoke CreditCheckService</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invoke CreditCheckService</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

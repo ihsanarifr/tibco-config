@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <pd:name>ProcessDefinitions/OrderProcess/QueryOrders.process</pd:name>
+    <pd:description/>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>29</pd:startX>
+    <pd:startY>100</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <htmlString>
+                <xsl:value-of select="$Generate-Final-HTML/root/finalStr"/>
+            </htmlString>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="htmlString" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>630</pd:endX>
+    <pd:endY>100</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1515654517893</pd:targetNamespace>
+    <pd:group name="Iterate Records">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:description/>
+        <pd:x>244</pd:x>
+        <pd:y>6</pd:y>
+        <pd:width>197</pd:width>
+        <pd:height>171</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:bw2CompatibilityMode>true</pd:bw2CompatibilityMode>
+            <pd:showBw2CompatibilityMode>true</pd:showBw2CompatibilityMode>
+            <pd:over>$Get-All-Orders/resultSet/Record</pd:over>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>HTMLStrings</pd:outSlot>
+            <pd:activityOutputName>Generate HTML Lines</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Generate HTML Lines</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Generate HTML Lines</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Generate HTML Lines">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:description/>
+            <pd:x>345</pd:x>
+            <pd:y>107</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="htmlStr" type="xsd:string"/>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <htmlStr>
+                    <xsl:value-of select="concat(&#xA;&quot;&lt;tr>&lt;td>&quot;, $Get-All-Orders/resultSet/Record[$i]/ORDER_ID, &#xA;&quot;&lt;/td>&lt;td>&quot;, $Get-All-Orders/resultSet/Record[$i]/ORDER_DATE,&#xA;&quot;&lt;/td>&lt;td>&quot;, $Get-All-Orders/resultSet/Record[$i]/STATUS,&#xA;&quot;&lt;/td>&lt;td>&quot;, $Get-All-Orders/resultSet/Record[$i]/TOTAL_AMOUNT,&#xA;&quot;&lt;/td>&lt;td>&quot;, $Get-All-Orders/resultSet/Record[$i]/DELIVERY_METHOD,&#xA;&quot;&lt;/td>&lt;/tr>&quot;)"/>
+                </htmlStr>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Get All Orders">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:description/>
+        <pd:x>153</pd:x>
+        <pd:y>100</pd:y>
+        <config>
+            <statement>SELECT SALES_ORDER.ORDER_ID, SALES_ORDER.ORDER_DATE, SALES_ORDER.STATUS, SALES_ORDER.TOTAL_AMOUNT, DELIVERY_METHOD
+FROM SALES_ORDER ORDER BY ORDER_DATE DESC</statement>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <optionalOrNillable>false</optionalOrNillable>
+            <Prepared_Param_DataType/>
+            <jdbcSharedConfig>/BWP.Core/Connections/OrderDB.sharedjdbc</jdbcSharedConfig>
+            <wizardData/>
+            <QueryOutputCachedSchemaColumns>ORDER_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ORDER_DATE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>STATUS</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>TOTAL_AMOUNT</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>2</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DELIVERY_METHOD</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Final HTML">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:description/>
+        <pd:x>517</pd:x>
+        <pd:y>108</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="finalStr" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <finalStr>
+                    <xsl:value-of select="concat(&#xA;&quot;&lt;tr>&lt;td>&lt;b>Order ID&lt;/b>&lt;/td>&lt;td>&lt;b>Order Date&lt;/b>&lt;/td>&lt;td>&lt;b>Status&lt;/b>&lt;/td>&lt;td>&lt;b>Total Amt.&lt;/b&lt;/td>&lt;td>&lt;b>DeliveryMethod&lt;/b>&lt;/td>&lt;/tr>&quot;,&#xA;tib:concat-sequence($HTMLStrings/AccumulatedOutput/htmlStr))"/>
+                </finalStr>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get All Orders</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get All Orders</pd:from>
+        <pd:to>Iterate Records</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Iterate Records</pd:from>
+        <pd:to>Generate Final HTML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Generate Final HTML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
