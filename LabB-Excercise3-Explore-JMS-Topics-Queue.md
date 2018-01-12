@@ -1,5 +1,9 @@
 # Explore JMS Topic and Queues
 
-## Run tibjmsQueueSender
+## Run topic publisher
 * masuk ke `/home/ihsan/tibco/ems/7.0/samples/java/`
-* execute `java tibjmsQueueSender -queue ihsan.PurchaseOrder.Batch /home/ihsan/Documents/BWEDU/BWEDU/BatchOrder/BatchOrder01.xml`
+* execute `java tibjmsTopicPublisher -topic sample "This is a Topic test message"`
+
+## Run topic subriber
+* masuk ke `/home/ihsan/tibco/ems/7.0/samples/java/`
+* execute `java tibjmsTopicSubscriber -topic sample`
