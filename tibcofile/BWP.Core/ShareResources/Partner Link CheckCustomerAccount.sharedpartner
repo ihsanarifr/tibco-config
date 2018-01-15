@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>Partner Link CheckCustomerAccount</name>
+    <resourceType>shared.partner.config</resourceType>
+    <config>
+        <partners>
+            <row partnerName="CheckCustomerAccount" timeout="0" endpoint="/BWP.Core/Services/CustomerAccount/Contract/CheckCustomerAccountService_ConcreteWSDL.wsdl#intfwsExistCustomerAccountEndpoint0" endpointType="soap">
+                <config>
+                    <endpointURI>http://localhost:7575/BWP.Core/Services/CustomerAccount/Interface/intfExistCustomerAccount-service.serviceagent/intfwsExistCustomerAccountEndpoint0</endpointURI>
+                    <useProxy>false</useProxy>
+                    <proxyName/>
+                    <requireBasicAuth>false</requireBasicAuth>
+                    <authScheme>NONE</authScheme>
+                    <basicHttpAuthIdentity/>
+                    <domain/>
+                    <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002"/>
+                    <soapAttachmentStyle>SwA</soapAttachmentStyle>
+                    <soap>
+                        <operation name="ExistCustomerAccountOp">
+                            <general>
+                                <config>
+                                    <soapAction>/BWP.Core/Services/CustomerAccount/Interface/intfExistCustomerAccount-service.serviceagent/intfwsExistCustomerAccountEndpoint0/ExistCustomerAccountOp</soapAction>
+                                </config>
+                            </general>
+                        </operation>
+                    </soap>
+                </config>
+            </row>
+        </partners>
+    </config>
+</BWSharedResource>

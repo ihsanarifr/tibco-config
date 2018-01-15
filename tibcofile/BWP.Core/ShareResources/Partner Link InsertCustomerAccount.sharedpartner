@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>Partner Link InsertCustomerAccount</name>
+    <resourceType>shared.partner.config</resourceType>
+    <config>
+        <partners>
+            <row partnerName="InsertCustomerAccount" timeout="0" endpoint="/BWP.Core/Services/CustomerAccount/Contract/InsertCustomerAccountService_ConcreteWSDL.wsdl#intfwsInsertCustomerAccountEndpoint1" endpointType="soap">
+                <config>
+                    <endpointURI>http://localhost:7575/BWP.Core/Services/CustomerAccount/Interface/intfInsertCustomerAccount-service.serviceagent/intfwsInsertCustomerAccountEndpoint1</endpointURI>
+                    <useProxy>false</useProxy>
+                    <proxyName/>
+                    <requireBasicAuth>false</requireBasicAuth>
+                    <authScheme>NONE</authScheme>
+                    <basicHttpAuthIdentity/>
+                    <domain/>
+                    <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002"/>
+                    <soapAttachmentStyle>SwA</soapAttachmentStyle>
+                    <soap>
+                        <operation name="InsertCustomerAccountOp">
+                            <general>
+                                <config>
+                                    <soapAction>/BWP.Core/Services/CustomerAccount/Interface/intfInsertCustomerAccount-service.serviceagent/intfwsInsertCustomerAccountEndpoint1/InsertCustomerAccountOp</soapAction>
+                                </config>
+                            </general>
+                        </operation>
+                    </soap>
+                </config>
+            </row>
+        </partners>
+    </config>
+</BWSharedResource>

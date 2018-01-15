@@ -42,8 +42,8 @@
             <property key="ae.palette.Policy.version" value="5.11.0"/>
             <property key="bam.bf.palette.bfpalette.version" value="5.3.0.V25"/>
             <property key="projectName" value="tibcofile"/>
-            <property key="ae.palette.transaction.palette.version" value="5.11.0"/>
             <property key="bam.bf.palette.bfpaletteext.version" value="5.3.0.V25"/>
+            <property key="ae.palette.transaction.palette.version" value="5.11.0"/>
             <property key="formvine.palette.version" value="1.0.0.11"/>
             <property key="ae.palette.rvpalette.version" value="5.11.0"/>
             <property key="ae.palette.jrmi.palette.version" value="5.11.0"/>

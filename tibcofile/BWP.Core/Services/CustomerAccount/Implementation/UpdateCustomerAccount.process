@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd2">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd2" schemaLocation="/BWP.Core/Schema/CustomerAccountSchema.xsd"/>
+    <pd:name>BWP.Core/Services/CustomerAccount/Implementation/UpdateCustomerAccount.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:CustomerAccount"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>583</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1515984691606</pd:targetNamespace>
+    <pd:activity name="Update Customer Account">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>359</pd:x>
+        <pd:y>71</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/BWP.Core/Connections/OrderDB.sharedjdbc</jdbcSharedConfig>
+            <statement>update CUSTOMER_ACCOUNT 
+set AMOUNT_OWED=?
+set AVAILABLE_CREDIT=?
+where ACCOUNT_ID=?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>AmountOwed</parameterName>
+                    <dataType>DOUBLE</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>AvailableCredit</parameterName>
+                    <dataType>DOUBLE</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>AccountID</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <AmountOwed>
+                    <xsl:value-of select="$Start/pfx:CustomerAccount/pfx:AmountOwed"/>
+                </AmountOwed>
+                <AvailableCredit>
+                    <xsl:value-of select="$Start/pfx:CustomerAccount/pfx:AvailableCredit"/>
+                </AvailableCredit>
+                <AccountID>
+                    <xsl:value-of select="$Start/pfx:CustomerAccount/pfx:AccountID"/>
+                </AccountID>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Update Customer Account</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Update Customer Account</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

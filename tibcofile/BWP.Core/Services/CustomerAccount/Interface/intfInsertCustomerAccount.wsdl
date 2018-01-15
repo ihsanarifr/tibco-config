@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx0="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd2" xmlns:pfx1="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd3" xmlns:tns="http://www.tibco.com/InserCustomerAccountConcrete" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tibco.com/InserCustomerAccountConcrete">
+    <import namespace="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd3" location="../../../Schema/CheckAccountResult.xsd"/>
+    <import namespace="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd2" location="../../../Schema/CustomerAccountSchema.xsd"/>
+    <message name="CheckAccountResult">
+        <part element="pfx1:CheckAccountResult" name="parameters"/>
+    </message>
+    <message name="CustomerAccount">
+        <part element="pfx0:CustomerAccount" name="parameters"/>
+    </message>
+    <portType name="portType">
+        <operation name="InsertCustomerAccountOp">
+            <input message="tns:CustomerAccount"/>
+            <output message="tns:CheckAccountResult"/>
+        </operation>
+    </portType>
+</definitions>

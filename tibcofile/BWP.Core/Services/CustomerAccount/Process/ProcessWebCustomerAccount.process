@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd2" xmlns:ns4="http://www.tibco/bwp/services/InsertCustomerAccount" xmlns:ns3="http://www.tibco.com/bwp/services/ExistCustomerAccountConcrete" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/bwp/services/ExistCustomerAccounteconcrete" xmlns:pfx4="ExistCustomerAccounteconcrete" xmlns:pfx3="http://www.tibco.com/ExistCustomerAccount" xmlns:pfx2="http://www.tibco.com/service/CustomerAccountConcrete" xmlns:pfx6="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd3">
+    <pd:name>BWP.Core/Services/CustomerAccount/Process/ProcessWebCustomerAccount.process</pd:name>
+    <pd:startName>HTTP Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="HTTP Receiver">
+        <pd:type>com.tibco.plugin.http.HTTPEventSource</pd:type>
+        <pd:resourceType>httppalette.httpEventSource</pd:resourceType>
+        <pd:x>86</pd:x>
+        <pd:y>98</pd:y>
+        <config>
+            <outputMode>String</outputMode>
+            <defaultEncoding>ISO8859_1</defaultEncoding>
+            <inputOutputVersion>5.3.0</inputOutputVersion>
+            <newMimeSupport>true</newMimeSupport>
+            <sharedChannel>/BWP.Core/Connections/WebOrderHTTP.sharedhttp</sharedChannel>
+            <parsePostData>true</parsePostData>
+            <customField>
+                <row>
+                    <attribute>AccountID</attribute>
+                    <attributeType>string</attributeType>
+                    <attributeCard>optional</attributeCard>
+                </row>
+                <row>
+                    <attribute>AmountOwed</attribute>
+                    <attributeType>string</attributeType>
+                    <attributeCard>optional</attributeCard>
+                </row>
+                <row>
+                    <attribute>AvailableCredit</attribute>
+                    <attributeType>string</attributeType>
+                    <attributeCard>optional</attributeCard>
+                </row>
+            </customField>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Accept" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Charset" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Connection" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1105</pd:endX>
+    <pd:endY>315</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:partners>
+        <row>
+            <partnerName>CheckCustomerAccount</partnerName>
+            <partnerInterfaceName>portType</partnerInterfaceName>
+            <partnerInterfaceNs>http://www.tibco.com/bwp/services/ExistCustomerAccountConcrete</partnerInterfaceNs>
+            <partnerConfig>/BWP.Core/ShareResources/Partner Link CheckCustomerAccount.sharedpartner#CheckCustomerAccount</partnerConfig>
+            <partnerInterfaceLocation>/BWP.Core/Services/CustomerAccount/Contract/CheckCustomerAccountService_ConcreteWSDL.wsdl</partnerInterfaceLocation>
+        </row>
+        <row>
+            <partnerName>InsertCustomerAccount</partnerName>
+            <partnerInterfaceName>portType</partnerInterfaceName>
+            <partnerInterfaceNs>http://www.tibco/bwp/services/InsertCustomerAccount</partnerInterfaceNs>
+            <partnerConfig>/BWP.Core/ShareResources/Partner Link InsertCustomerAccount.sharedpartner#InsertCustomerAccount</partnerConfig>
+            <partnerInterfaceLocation>/BWP.Core/Services/CustomerAccount/Contract/InsertCustomerAccountService_ConcreteWSDL.wsdl</partnerInterfaceLocation>
+        </row>
+    </pd:partners>
+    <pd:targetNamespace>http://xmlns.example.com/1515984503393</pd:targetNamespace>
+    <pd:activity name="Query Customer Account">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>439</pd:x>
+        <pd:y>96</pd:y>
+        <config>
+            <processName>/BWP.Core/Services/CustomerAccount/Implementation/QueryCustomerAccount.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <query>
+                    <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/RequestURI"/>
+                </query>
+                <AccountID>
+                    <xsl:value-of select="'1234123412341234'"/>
+                </AccountID>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send HTTP Response">
+        <pd:type>com.tibco.plugin.http.HTTPResponseActivity</pd:type>
+        <pd:resourceType>httppalette.httpWebResponse</pd:resourceType>
+        <pd:x>1130</pd:x>
+        <pd:y>165</pd:y>
+        <config>
+            <closeConnection>true</closeConnection>
+            <eventSource>HTTP Receiver</eventSource>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings>
+            <ResponseActivityInput>
+                <xsl:choose>
+                    <xsl:when test="$HTTP-Receiver/ProcessStarterOutput/RequestURI = '/allaccount'">
+                        <asciiContent>
+                            <xsl:value-of select="concat('&lt;HTML>&lt;BODY font face=&quot;Arial,Helvetica,sans-serif&quot;',&#xA;&quot;&lt;h1>Customer Account&lt;/h1>&quot;,&#xA;&quot;&lt;a href='localhost:6060/create.html'>Tambah&lt;/a>&quot;,&#xA;'&lt;table border=&quot;1&quot; cellspacing=&quot;0&quot; cellpadding=&quot;2&quot; bordercolor=&quot;#ddddff&quot; bgcolor=&quot;#a0b8c8&quot;>',&#xA;$Query-Customer-Account,&quot;&lt;/table>&lt;/BODY>&lt;/HTML>&quot;)"/>
+                        </asciiContent>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <asciiContent>
+                            <xsl:value-of select="concat('&lt;HTML>&lt;BODY font face=&quot;Arial,Helvetica,sans-serif&quot;>',&#xA;&quot;&lt;h1>Edit Customer&lt;/h1>&quot;,&#xA;'&lt;table border=&quot;1&quot; cellspacing=&quot;0&quot; cellpadding=&quot;2&quot; bordercolor=&quot;#ddddff&quot; bgcolor=&quot;#a0b8c8&quot;>',&#xA;$Query-Customer-Account/root/htmlstring,&quot;&lt;/table>&lt;/BODY>&lt;/HTML>&quot;)"/>
+                        </asciiContent>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </ResponseActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Query ALL">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>250</pd:x>
+        <pd:y>53</pd:y>
+        <config>
+            <role/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/RequestURI"/>
+                </message>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Query First">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>251</pd:x>
+        <pd:y>172</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/RequestURI"/>
+                </message>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Insert Account">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>252</pd:x>
+        <pd:y>272</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>591</pd:x>
+        <pd:y>210</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>743</pd:x>
+        <pd:y>290</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Exist">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>590</pd:x>
+        <pd:y>290</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Invoke Check Customer Account">
+        <pd:type>com.tibco.ae.tools.palettes.servicepalette.activities.InvokePartnerActivity</pd:type>
+        <pd:resourceType>service.activity.invokePartner</pd:resourceType>
+        <pd:x>410</pd:x>
+        <pd:y>271</pd:y>
+        <config>
+            <partner>CheckCustomerAccount</partner>
+            <operation>ExistCustomerAccountOp</operation>
+        </config>
+        <pd:inputBindings>
+            <ns3:CustomerAccount>
+                <parameters>
+                    <ns2:CustomerAccount>
+                        <ns2:AccountID>
+                            <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/parameters/AccountID"/>
+                        </ns2:AccountID>
+                        <ns2:AmountOwed>
+                            <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/parameters/AmountOwed"/>
+                        </ns2:AmountOwed>
+                        <ns2:AvailableCredit>
+                            <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/parameters/AvailableCredit"/>
+                        </ns2:AvailableCredit>
+                    </ns2:CustomerAccount>
+                </parameters>
+            </ns3:CustomerAccount>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Invoke Insert Customer Account">
+        <pd:type>com.tibco.ae.tools.palettes.servicepalette.activities.InvokePartnerActivity</pd:type>
+        <pd:resourceType>service.activity.invokePartner</pd:resourceType>
+        <pd:x>590</pd:x>
+        <pd:y>387</pd:y>
+        <config>
+            <partner>InsertCustomerAccount</partner>
+            <operation>InsertCustomerAccountOp</operation>
+        </config>
+        <pd:inputBindings>
+            <ns4:CustomerAccount>
+                <parameters>
+                    <ns2:CustomerAccount>
+                        <ns2:AccountID>
+                            <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/parameters/AccountID"/>
+                        </ns2:AccountID>
+                        <ns2:AmountOwed>
+                            <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/parameters/AmountOwed"/>
+                        </ns2:AmountOwed>
+                        <ns2:AvailableCredit>
+                            <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/parameters/AvailableCredit"/>
+                        </ns2:AvailableCredit>
+                    </ns2:CustomerAccount>
+                </parameters>
+            </ns4:CustomerAccount>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Query Customer Account</pd:from>
+        <pd:to>Send HTTP Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send HTTP Response</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>HTTP Receiver</pd:from>
+        <pd:to>Log Query ALL</pd:to>
+        <pd:xpathDescription>ALL</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$HTTP-Receiver/ProcessStarterOutput/RequestURI='/allaccount'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>HTTP Receiver</pd:from>
+        <pd:to>Log Query First</pd:to>
+        <pd:xpathDescription>FIRST</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$HTTP-Receiver/ProcessStarterOutput/RequestURI = '/first'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Query ALL</pd:from>
+        <pd:to>Query Customer Account</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Query First</pd:from>
+        <pd:to>Query Customer Account</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>HTTP Receiver</pd:from>
+        <pd:to>Log Insert Account</pd:to>
+        <pd:xpathDescription>INSERT</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$HTTP-Receiver/ProcessStarterOutput/RequestURI = '/saveaccount'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Exist</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error</pd:from>
+        <pd:to>Send HTTP Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>Send HTTP Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Insert Account</pd:from>
+        <pd:to>Invoke Check Customer Account</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invoke Check Customer Account</pd:from>
+        <pd:to>Error</pd:to>
+        <pd:xpathDescription>Error</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invoke Check Customer Account</pd:from>
+        <pd:to>Exist</pd:to>
+        <pd:xpathDescription>exist</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Invoke-Check-Customer-Account/ns3:CheckAccountResult/parameters/pfx6:CheckAccountResult/pfx6:Status = 'exist'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invoke Check Customer Account</pd:from>
+        <pd:to>Invoke Insert Customer Account</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invoke Insert Customer Account</pd:from>
+        <pd:to>Send HTTP Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

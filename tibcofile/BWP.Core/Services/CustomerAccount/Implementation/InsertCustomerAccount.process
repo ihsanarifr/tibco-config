@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd3" xmlns:pfx="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd2">
+    <xsd:import namespace="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd2" schemaLocation="/BWP.Core/Schema/CustomerAccountSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd3" schemaLocation="/BWP.Core/Schema/CheckAccountResult.xsd"/>
+    <pd:name>BWP.Core/Services/CustomerAccount/Implementation/InsertCustomerAccount.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:CustomerAccount"/>
+    <pd:startX>69</pd:startX>
+    <pd:startY>125</pd:startY>
+    <pd:returnBindings>
+        <pfx2:CheckAccountResult>
+            <xsl:choose>
+                <xsl:when test="$_error">
+                    <pfx2:Status>
+                        <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                    </pfx2:Status>
+                </xsl:when>
+                <xsl:otherwise>
+                    <pfx2:Status>
+                        <xsl:value-of select="&quot;ok&quot;"/>
+                    </pfx2:Status>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pfx2:CheckAccountResult>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:CheckAccountResult"/>
+    <pd:endX>551</pd:endX>
+    <pd:endY>125</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1515984674614</pd:targetNamespace>
+    <pd:activity name="Insert Customer Account">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>238</pd:x>
+        <pd:y>132</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/BWP.Core/Connections/OrderDB.sharedjdbc</jdbcSharedConfig>
+            <statement>insert into CUSTOMER_ACCOUNT
+VALUES (?,?,?)</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>AccountID</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>AmountOwed</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>AvailableCredit</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error Insert">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>397</pd:x>
+        <pd:y>196</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Insert Customer Account</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert Customer Account</pd:from>
+        <pd:to>Error Insert</pd:to>
+        <pd:xpathDescription>error</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Insert</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert Customer Account</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>success</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

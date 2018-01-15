@@ -69,8 +69,8 @@
             <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
             <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
             <pd:description/>
-            <pd:x>345</pd:x>
-            <pd:y>107</pd:y>
+            <pd:x>342</pd:x>
+            <pd:y>105</pd:y>
             <config>
                 <element>
                     <xsd:element name="htmlStr" type="xsd:string"/>

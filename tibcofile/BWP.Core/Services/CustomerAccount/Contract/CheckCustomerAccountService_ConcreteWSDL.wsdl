@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created by TIBCO WSDL-->
+<wsdl:definitions xmlns:ns1="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd3" xmlns:tns="http://www.tibco.com/bwp/services/ExistCustomerAccountConcrete" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns0="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd2" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="Untitled" targetNamespace="http://www.tibco.com/bwp/services/ExistCustomerAccountConcrete">
+    <wsdl:types>
+        <xs:schema xmlns="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd3" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd3" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:element name="CheckAccountResult">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Status" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+        <xs:schema xmlns="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd2" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd2" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:element name="CustomerAccount">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="AccountID" type="xs:string"/>
+                        <xs:element name="AmountOwed" type="xs:double"/>
+                        <xs:element name="AvailableCredit" type="xs:double"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:service name="intfExistCustomerAccount-service">
+        <wsdl:port name="intfwsExistCustomerAccountEndpoint0" binding="tns:intfwsExistCustomerAccountEndpoint0Binding">
+            <soap:address location="http://localhost:7575/BWP.Core/Services/CustomerAccount/Interface/intfExistCustomerAccount-service.serviceagent/intfwsExistCustomerAccountEndpoint0"/>
+        </wsdl:port>
+    </wsdl:service>
+    <wsdl:portType name="portType">
+        <wsdl:operation name="ExistCustomerAccountOp">
+            <wsdl:input message="tns:CustomerAccount"/>
+            <wsdl:output message="tns:CheckAccountResult"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="intfwsExistCustomerAccountEndpoint0Binding" type="tns:portType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="ExistCustomerAccountOp">
+            <soap:operation style="document" soapAction="/BWP.Core/Services/CustomerAccount/Interface/intfExistCustomerAccount-service.serviceagent/intfwsExistCustomerAccountEndpoint0/ExistCustomerAccountOp"/>
+            <wsdl:input>
+                <soap:body use="literal" parts="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:message name="CustomerAccount">
+        <wsdl:part name="parameters" element="ns0:CustomerAccount"/>
+    </wsdl:message>
+    <wsdl:message name="CheckAccountResult">
+        <wsdl:part name="parameters" element="ns1:CheckAccountResult"/>
+    </wsdl:message>
+</wsdl:definitions>

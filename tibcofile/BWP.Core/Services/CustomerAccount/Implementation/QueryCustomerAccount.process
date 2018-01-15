@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd2">
+    <xsd:import namespace="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd2" schemaLocation="/BWP.Core/Schema/CustomerAccountSchema.xsd"/>
+    <pd:name>BWP.Core/Services/CustomerAccount/Implementation/QueryCustomerAccount.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="query" type="xsd:string"/>
+                    <xsd:element name="AccountID" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>134</pd:startX>
+    <pd:startY>72</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <htmlstring>
+                <xsl:value-of select="$Generate-Final-First-HTML/root/finalStr"/>
+            </htmlstring>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="htmlstring" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>852</pd:endX>
+    <pd:endY>281</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1515984193166</pd:targetNamespace>
+    <pd:activity name="Query Select All Customer Account">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>390</pd:x>
+        <pd:y>80</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <statement>select * from CUSTOMER_ACCOUNT</statement>
+            <jdbcSharedConfig>/BWP.Core/Connections/OrderDB.sharedjdbc</jdbcSharedConfig>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>ACCOUNT_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>VARCHAR2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AMOUNT_OWED</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>2</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>NUMBER</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AVAILABLE_CREDIT</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>2</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>NUMBER</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Query Select By ID Customer Account">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>387</pd:x>
+        <pd:y>289</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/BWP.Core/Connections/OrderDB.sharedjdbc</jdbcSharedConfig>
+            <statement>select * from CUSTOMER_ACCOUNT where ACCOUNT_ID=?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>AccountID</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>ACCOUNT_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>VARCHAR2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AMOUNT_OWED</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>2</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>NUMBER</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AVAILABLE_CREDIT</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>2</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>NUMBER</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <AccountID>
+                    <xsl:value-of select="$Start/root/AccountID"/>
+                </AccountID>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Iterate Records">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:description/>
+        <pd:x>545</pd:x>
+        <pd:y>18</pd:y>
+        <pd:width>182</pd:width>
+        <pd:height>152</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:bw2CompatibilityMode>true</pd:bw2CompatibilityMode>
+            <pd:showBw2CompatibilityMode>true</pd:showBw2CompatibilityMode>
+            <pd:over>$Query-Select-All-Customer-Account/resultSet/Record</pd:over>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>HTMLStrings</pd:outSlot>
+            <pd:activityOutputName>Generate HTML Lines</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Generate HTML Lines</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Generate HTML Lines</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Generate HTML Lines">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:description/>
+            <pd:x>636</pd:x>
+            <pd:y>107</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="htmlStr" type="xsd:string"/>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <htmlStr>
+                    <xsl:value-of select="concat(&#xA;&quot;&lt;tr>&lt;td>&quot;, $Query-Select-All-Customer-Account/resultSet/Record[$i]/ACCOUNT_ID, &#xA;&quot;&lt;/td>&lt;td>&quot;,$Query-Select-All-Customer-Account/resultSet/Record[$i]/AMOUNT_OWED,&#xA;&quot;&lt;/td>&lt;td>&quot;, $Query-Select-All-Customer-Account/resultSet/Record[$i]/AVAILABLE_CREDIT,&#xA;&quot;&lt;/td>&lt;td>&lt;a href='http://localhost:6666/first?AccountID=&quot;,$Query-Select-All-Customer-Account/resultSet/Record[$i]/ACCOUNT_ID,&quot;'>Edit&lt;/a>&quot;,&#xA;&quot;&lt;/td>&lt;/tr>&quot;)"/>
+                </htmlStr>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Generate Final HTML">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:description/>
+        <pd:x>833</pd:x>
+        <pd:y>135</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="finalStr" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <finalStr>
+                    <xsl:value-of select="concat(&quot;&lt;tr>&lt;td>&lt;b>Account ID&lt;/b>&lt;/td>&lt;td>&lt;b>Amount Owed&lt;/b>&lt;/td>&lt;td>&lt;b>Available Credit&lt;/b>&lt;/td>&lt;td>Modifikasi&lt;/td>&lt;/tr>&quot;,tib:concat-sequence($HTMLStrings/AccumulatedOutput/htmlStr))"/>
+                </finalStr>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Final First HTML">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:description/>
+        <pd:x>618</pd:x>
+        <pd:y>289</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="finalStr" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <finalStr>
+                    <xsl:value-of select="concat(&#xA;&quot;&lt;tr>&lt;td>Account ID&lt;/td>&lt;td>&quot;,$Query-Select-By-ID-Customer-Account/resultSet/Record[1]/ACCOUNT_ID,&quot;&lt;/td>&lt;/tr>&quot;,&#xA;&quot;&lt;tr>&lt;td>Account ID&lt;/td>&lt;td>&quot;,$Query-Select-By-ID-Customer-Account/resultSet/Record[1]/AMOUNT_OWED,&quot;&lt;/td>&lt;/tr>&quot;,&#xA;&quot;&lt;tr>&lt;td>Account ID&lt;/td>&lt;td>&quot;,$Query-Select-By-ID-Customer-Account/resultSet/Record[1]/AVAILABLE_CREDIT,&quot;&lt;/td>&lt;/tr>&quot;&#xA;)"/>
+                </finalStr>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Query Select All Customer Account</pd:to>
+        <pd:xpathDescription>ALL</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/root/query = '/allaccount'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Query Select By ID Customer Account</pd:to>
+        <pd:xpathDescription>FIRST</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/root/query = '/first'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Iterate Records</pd:from>
+        <pd:to>Generate Final HTML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Generate Final HTML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Query Select All Customer Account</pd:from>
+        <pd:to>Iterate Records</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Query Select By ID Customer Account</pd:from>
+        <pd:to>Generate Final First HTML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Generate Final First HTML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
