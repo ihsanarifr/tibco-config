@@ -75,3 +75,13 @@ Saat melakukan edit `~/.bashrc` lihat apakah saat user `root` atau tidak? Usahak
 
 ### Perintah `echo $JAVA_HOME` sudah bisa tetapi saat peritah `java -version` belum bisa
 Coba lihat kembali path yang benar yan menghubungkan jdk, usahakan path untuk jdk java ini mengacu di `/opt/jdk/java-orancle-8`
+
+### Bagaimana cara menambah kapasitas memory swap?
+Caranya ada di [tutorial disini](https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-16-04).
+* melihat swap yang ada `sudo swapon --show`
+* melihat kapasitas memory yang sedang running `free -m`
+* membuat file swap `sudo fallocate -l 1G /swapfile` -> 1G menunjukkan 1 Giga
+* melihat file swap yang sudah dibuat `ls -lh /swapfile`
+* menambahkan hak akses file swap `sudo chmod 600 /swapfile`
+* create swap `sudo mkswap /swapfile`
+* tambahkan ini untuk mengaktifkan `sudo swapon /swapfile`
