@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd3" xmlns:pfx="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd2">
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd3" xmlns:pfx="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd2">
     <xsd:import namespace="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd2" schemaLocation="/BWP.Core/Schema/CustomerAccountSchema.xsd"/>
     <xsd:import namespace="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd3" schemaLocation="/BWP.Core/Schema/CheckAccountResult.xsd"/>
     <pd:name>BWP.Core/Services/CustomerAccount/Implementation/InsertCustomerAccount.process</pd:name>
@@ -58,7 +58,17 @@ VALUES (?,?,?)</statement>
             </Prepared_Param_DataType>
         </config>
         <pd:inputBindings>
-            <jdbcUpdateActivityInput/>
+            <jdbcUpdateActivityInput>
+                <AccountID>
+                    <xsl:value-of select="$Start/pfx:CustomerAccount/pfx:AccountID"/>
+                </AccountID>
+                <AmountOwed>
+                    <xsl:value-of select="$Start/pfx:CustomerAccount/pfx:AmountOwed"/>
+                </AmountOwed>
+                <AvailableCredit>
+                    <xsl:value-of select="$Start/pfx:CustomerAccount/pfx:AvailableCredit"/>
+                </AvailableCredit>
+            </jdbcUpdateActivityInput>
         </pd:inputBindings>
     </pd:activity>
     <pd:activity name="Error Insert">

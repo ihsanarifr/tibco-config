@@ -17,9 +17,18 @@
     <pd:startY>72</pd:startY>
     <pd:returnBindings>
         <root>
-            <htmlstring>
-                <xsl:value-of select="$Generate-Final-First-HTML/root/finalStr"/>
-            </htmlstring>
+            <xsl:choose>
+                <xsl:when test="$Start/root/query = '/allaccount'">
+                    <htmlstring>
+                        <xsl:value-of select="$Generate-Final-HTML/root/finalStr"/>
+                    </htmlstring>
+                </xsl:when>
+                <xsl:otherwise>
+                    <htmlstring>
+                        <xsl:value-of select="$Generate-Final-First-HTML/root/finalStr"/>
+                    </htmlstring>
+                </xsl:otherwise>
+            </xsl:choose>
         </root>
     </pd:returnBindings>
     <pd:endName>End</pd:endName>

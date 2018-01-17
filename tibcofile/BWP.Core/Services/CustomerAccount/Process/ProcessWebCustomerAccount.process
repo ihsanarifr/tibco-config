@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd2" xmlns:ns4="http://www.tibco/bwp/services/InsertCustomerAccount" xmlns:ns3="http://www.tibco.com/bwp/services/ExistCustomerAccountConcrete" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/bwp/services/ExistCustomerAccounteconcrete" xmlns:pfx4="ExistCustomerAccounteconcrete" xmlns:pfx3="http://www.tibco.com/ExistCustomerAccount" xmlns:pfx2="http://www.tibco.com/service/CustomerAccountConcrete" xmlns:pfx6="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd3">
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns4="http://www.tibco/bwp/services/InsertCustomerAccount" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns3="http://www.tibco.com/bwp/services/ExistCustomerAccountConcrete" xmlns:pfx5="http://www.tibco.com/bwp/services/ExistCustomerAccounteconcrete" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="ExistCustomerAccounteconcrete" xmlns:pfx3="http://www.tibco.com/ExistCustomerAccount" xmlns:pfx2="http://www.tibco.com/service/CustomerAccountConcrete" xmlns:pfx="http://www.tibco.com/pe/EngineTypes" xmlns:pfx6="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd3">
     <pd:name>BWP.Core/Services/CustomerAccount/Process/ProcessWebCustomerAccount.process</pd:name>
     <pd:startName>HTTP Receiver</pd:startName>
     <pd:startX>0</pd:startX>
@@ -78,8 +78,8 @@
     <pd:activity name="Query Customer Account">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>439</pd:x>
-        <pd:y>96</pd:y>
+        <pd:x>445</pd:x>
+        <pd:y>110</pd:y>
         <config>
             <processName>/BWP.Core/Services/CustomerAccount/Implementation/QueryCustomerAccount.process</processName>
         </config>
@@ -174,7 +174,11 @@
             <role>User</role>
         </config>
         <pd:inputBindings>
-            <ns:ActivityInput/>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/RequestURI"/>
+                </message>
+            </ns:ActivityInput>
         </pd:inputBindings>
     </pd:activity>
     <pd:activity name="Error">
@@ -285,7 +289,7 @@
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>$HTTP-Receiver/ProcessStarterOutput/RequestURI = '/first'</pd:xpath>
+        <pd:xpath>$HTTP-Receiver/ProcessStarterOutput/RequestURI = '/firstaccount'</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>Log Query ALL</pd:from>
