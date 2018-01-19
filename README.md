@@ -85,3 +85,10 @@ Caranya ada di [tutorial disini](https://www.digitalocean.com/community/tutorial
 * menambahkan hak akses file swap `sudo chmod 600 /swapfile`
 * create swap `sudo mkswap /swapfile`
 * tambahkan ini untuk mengaktifkan `sudo swapon /swapfile`
+
+### Bagaimana cara menambah kapasitas memory swap permanent?
+Ini ada aturan dan rekomendasi kapasistas swap pada sistem bisa di baca [disini](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/installation_guide/s2-diskpartrecommend-ppc#id4394007) untuk yang memakai distro linux Ubuntu penjelasannya [disini](https://help.ubuntu.com/community/SwapFaq)
+* ketik perintah `echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab`
+* lalu `cat /proc/sys/vm/swappinest`
+* edit file `/etc/sysctl.conf` dengan perintah `sudo nano /etc/sysctl.conf`
+* tambahkan kode ini dibawah <code>vm.swappiness=10</code>
