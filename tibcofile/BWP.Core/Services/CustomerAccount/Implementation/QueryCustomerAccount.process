@@ -169,7 +169,7 @@
             </config>
             <pd:inputBindings>
                 <htmlStr>
-                    <xsl:value-of select="concat(&#xA;&quot;&lt;tr>&lt;td>&quot;, $Query-Select-All-Customer-Account/resultSet/Record[$i]/ACCOUNT_ID, &#xA;&quot;&lt;/td>&lt;td>&quot;,$Query-Select-All-Customer-Account/resultSet/Record[$i]/AMOUNT_OWED,&#xA;&quot;&lt;/td>&lt;td>&quot;, $Query-Select-All-Customer-Account/resultSet/Record[$i]/AVAILABLE_CREDIT,&#xA;&quot;&lt;/td>&lt;td>&lt;a href='http://localhost:6666/first?AccountID=&quot;,$Query-Select-All-Customer-Account/resultSet/Record[$i]/ACCOUNT_ID,&quot;'>Edit&lt;/a>&quot;,&#xA;&quot;&lt;/td>&lt;/tr>&quot;)"/>
+                    <xsl:value-of select="concat(&#xA;&quot;&lt;tr>&lt;td>&quot;, $Query-Select-All-Customer-Account/resultSet/Record[$i]/ACCOUNT_ID, &#xA;&quot;&lt;/td>&lt;td>&quot;,$Query-Select-All-Customer-Account/resultSet/Record[$i]/AMOUNT_OWED,&#xA;&quot;&lt;/td>&lt;td>&quot;, $Query-Select-All-Customer-Account/resultSet/Record[$i]/AVAILABLE_CREDIT,&#xA;&quot;&lt;/td>&lt;td>&quot;,&#xA;&quot;&lt;form action='http://localhost:6666/first'>&lt;button type='submit>Edit&lt;/button>&lt;input type='hidden' name='AccountID' value='&quot;,$Query-Select-All-Customer-Account/resultSet/Record[$i]/ACCOUNT_ID,&quot;'>&lt;/form>&quot;,&#xA;&quot;&lt;form action='http://localhost:6666/delete'>&lt;button type='submit>Delete&lt;/button>&lt;input type='hidden' name='AccountID' value='&quot;,$Query-Select-All-Customer-Account/resultSet/Record[$i]/ACCOUNT_ID,&quot;'>&lt;/form>&quot;,&#xA;&quot;&lt;/td>&lt;/tr>&quot;)"/>
                 </htmlStr>
             </pd:inputBindings>
         </pd:activity>

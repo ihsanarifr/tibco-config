@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns4="http://www.tibco/bwp/services/InsertCustomerAccount" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns3="http://www.tibco.com/bwp/services/ExistCustomerAccountConcrete" xmlns:pfx5="http://www.tibco.com/bwp/services/ExistCustomerAccounteconcrete" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="ExistCustomerAccounteconcrete" xmlns:pfx3="http://www.tibco.com/ExistCustomerAccount" xmlns:pfx2="http://www.tibco.com/service/CustomerAccountConcrete" xmlns:pfx="http://www.tibco.com/pe/EngineTypes" xmlns:pfx6="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd3">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd2" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns4="http://www.tibco/bwp/services/InsertCustomerAccount" xmlns:ns3="http://www.tibco.com/bwp/services/ExistCustomerAccountConcrete" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/bwp/services/ExistCustomerAccounteconcrete" xmlns:pfx4="ExistCustomerAccounteconcrete" xmlns:pfx3="http://www.tibco.com/ExistCustomerAccount" xmlns:pfx2="http://www.tibco.com/service/CustomerAccountConcrete" xmlns:pfx="http://www.tibco.com/pe/EngineTypes" xmlns:pfx6="http://www.tibco.com/schemas/tibcofile/BWP.Core/Schema/Schema.xsd3">
     <pd:name>BWP.Core/Services/CustomerAccount/Process/ProcessWebCustomerAccount.process</pd:name>
     <pd:startName>HTTP Receiver</pd:startName>
     <pd:startX>0</pd:startX>
@@ -209,7 +209,7 @@
         <pd:type>com.tibco.ae.tools.palettes.servicepalette.activities.InvokePartnerActivity</pd:type>
         <pd:resourceType>service.activity.invokePartner</pd:resourceType>
         <pd:x>410</pd:x>
-        <pd:y>271</pd:y>
+        <pd:y>279</pd:y>
         <config>
             <partner>CheckCustomerAccount</partner>
             <operation>ExistCustomerAccountOp</operation>
